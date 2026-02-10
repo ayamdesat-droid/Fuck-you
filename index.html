@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoCash Lesotho – Fast & Secure Loans</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { min-height: 100vh; font-family: 'Inter', sans-serif; background: #f8f9fc; overflow-x: hidden; overflow-y: auto; }
+        body { display: flex; flex-direction: column; align-items: center; padding: clamp(16px, 3vw, 24px); }
+        header { width: 100%; max-width: 480px; padding: clamp(12px, 3vw, 16px) clamp(16px, 4vw, 24px); display: flex; justify-content: space-between; align-items: center; margin-bottom: clamp(12px, 3vw, 20px); background: white; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+        .menu-btn { font-size: clamp(24px, 6vw, 28px); background: none; border: none; cursor: pointer; color: #2c3e50; }
+        .logo { font-size: clamp(26px, 6vw, 32px); font-weight: 700; }
+        .logo-eco { color: #0066ff; } .logo-cash { color: #e63946; }
+        .card { background: white; border-radius: 20px; padding: clamp(28px, 6vw, 40px) clamp(24px, 5vw, 32px); width: 100%; max-width: 480px; box-shadow: 0 12px 48px rgba(0,0,0,0.08); text-align: center; display: flex; flex-direction: column; gap: 32px; }
+        .hero-title { font-size: clamp(24px, 6vw, 32px); font-weight: 700; color: #1a1a1a; line-height: 1.15; margin-bottom: 12px; }
+        .hero-subtitle { font-size: clamp(15px, 3.5vw, 17px); color: #495057; max-width: 420px; margin: 0 auto 32px; }
+        .calc-section { background: #f8f9ff; border-radius: 16px; padding: clamp(24px, 5vw, 32px); border: 1px solid #e9ecef; }
+        .calc-title { font-size: clamp(18px, 4.5vw, 22px); font-weight: 700; color: #2c3e50; margin-bottom: 28px; }
+        .input-group { margin-bottom: 32px; }
+        .input-header { display: flex; justify-content: space-between; margin-bottom: 10px; font-weight: 600; font-size: clamp(14px, 3.5vw, 16px); color: #2c3e50; }
+        .input-value { color: #4361ee; font-weight: 700; }
+        .slider { -webkit-appearance: none; width: 100%; height: 10px; border-radius: 5px; background: #dee2e6; outline: none; }
+        .slider::-webkit-slider-thumb { -webkit-appearance: none; width: 28px; height: 28px; border-radius: 50%; background: #4361ee; cursor: pointer; box-shadow: 0 2px 8px rgba(67,97,238,0.3); }
+        .range-labels { display: flex; justify-content: space-between; color: #6c757d; font-size: 13px; margin-top: 8px; font-weight: 500; }
+        .payment-box { background: #e9f5ff; padding: 20px; border-radius: 16px; border: 1px solid #cce5ff; }
+        .payment-label { display: block; color: #495057; font-size: 15px; margin-bottom: 8px; }
+        .payment-amount { font-size: clamp(28px, 8vw, 36px); font-weight: 800; color: #0056b3; letter-spacing: -0.5px; }
+        .apply-btn { width: 100%; padding: clamp(16px, 4vw, 20px); background: linear-gradient(90deg, #4361ee, #7209b7); color: white; border: none; border-radius: 50px; font-size: clamp(17px, 4.5vw, 19px); font-weight: 700; cursor: pointer; box-shadow: 0 8px 24px rgba(67,97,238,0.25); transition: all 0.2s; }
+        .apply-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(67,97,238,0.35); }
+        .features { display: flex; justify-content: center; flex-wrap: wrap; gap: 24px; margin-top: 16px; }
+        .feature { text-align: center; color: #495057; font-size: clamp(13px, 3.5vw, 15px); flex: 1 1 120px; max-width: 140px; }
+        .feature-icon { font-size: clamp(36px, 9vw, 44px); margin-bottom: 12px; display: block; }
+        footer { padding: clamp(20px, 5vw, 32px) 20px; color: #adb5bd; font-size: clamp(12px, 3vw, 14px); text-align: center; flex-shrink: 0; margin-top: auto; }
+        @media (min-width: 769px) { body { padding: 32px; justify-content: center; } .card { padding: 48px 40px; } }
+    </style>
+</head>
+<body>
+
+    <header>
+        <button class="menu-btn">☰</button>
+        <div class="logo"><span class="logo-eco">Eco</span><span class="logo-cash">Cash</span></div>
+        <div></div>
+    </header>
+
+    <main class="card">
+        <div>
+            <h1 class="hero-title">Fast, Secure Loans for Your Needs</h1>
+            <p class="hero-subtitle">Get approved in as little as 24 hours with competitive rates, flexible repayment terms, and complete privacy.</p>
+
+            <div class="calc-section">
+                <h2 class="calc-title">Estimate Your Loan & Repayment</h2>
+
+                <div class="input-group">
+                    <div class="input-header">
+                        <span class="input-label">Loan Amount (M)</span>
+                        <span class="input-value" id="amountValue">M100,000</span>
+                    </div>
+                    <input type="range" class="slider" min="500" max="100000" value="100000" id="amountSlider">
+                    <div class="range-labels"><span>M500</span><span>M100,000</span></div>
+                </div>
+
+                <div class="input-group">
+                    <div class="input-header">
+                        <span class="input-label">Loan Term</span>
+                        <span class="input-value" id="termValue">12 months</span>
+                    </div>
+                    <input type="range" class="slider" min="6" max="60" step="6" value="12" id="termSlider">
+                    <div class="range-labels"><span>6 months</span><span>60 months</span></div>
+                </div>
+
+                <div class="payment-box">
+                    <span class="payment-label">Estimated Monthly Repayment</span>
+                    <span class="payment-amount" id="paymentAmount">M450.00</span>
+                </div>
+            </div>
+
+            <button class="apply-btn" id="applyBtn">Apply Now</button>
+        </div>
+
+        <div class="features">
+            <div class="feature"><div class="feature-icon">⚡</div>Fast Approval<br><small>Usually within 24 hours</small></div>
+            <div class="feature"><div class="feature-icon">💰</div>Competitive Rates<br><small>Starting from 8% p.a.</small></div>
+            <div class="feature"><div class="feature-icon">🔒</div>Bank-Level Security<br><small>Your data is protected</small></div>
+        </div>
+    </main>
+
+    <footer>© 2026 EcoCash Lesotho – Licensed & Regulated Financial Services</footer>
+
+    <script>
+        const amountSlider = document.getElementById('amountSlider');
+        const termSlider = document.getElementById('termSlider');
+        const amountValue = document.getElementById('amountValue');
+        const termValue = document.getElementById('termValue');
+        const paymentAmount = document.getElementById('paymentAmount');
+
+        function updateCalculator() {
+            const amount = parseFloat(amountSlider.value);
+            const months = parseFloat(termSlider.value);
+            amountValue.textContent = 'M' + amount.toLocaleString();
+            termValue.textContent = months + (months === 1 ? ' month' : ' months');
+
+            const annualRate = 0.08;
+            const monthlyRate = annualRate / 12;
+
+            if (months === 0) {
+                paymentAmount.textContent = 'M' + amount.toFixed(2);
+            } else {
+                const power = Math.pow(1 + monthlyRate, months);
+                const monthlyPayment = amount * (monthlyRate * power) / (power - 1);
+                paymentAmount.textContent = 'M' + monthlyPayment.toFixed(2);
+            }
+        }
+
+        updateCalculator();
+        amountSlider.addEventListener('input', updateCalculator);
+        termSlider.addEventListener('input', updateCalculator);
+
+        document.getElementById('applyBtn').addEventListener('click', function() {
+            localStorage.setItem('loanAmount', amountSlider.value);
+            localStorage.setItem('loanTerm', termSlider.value);
+            window.location.href = 'application';
+        });
+    </script>
+</body>
+</html>
